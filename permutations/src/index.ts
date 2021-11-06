@@ -14,3 +14,24 @@ export const getArrayMutations = (
   }
   return perms;
 };
+
+export const substractStar = (mutation: string[], target: string) => {
+  if (mutation.length === 1) {
+    return target.replace("*", mutation[0]);
+  } else if (mutation.length === 0) {
+    return target;
+  }
+  // split target by *
+  const targetPhase = target.split("*");
+  let result: string[] = [];
+  // loop targetPhase and add mutation
+  for (let i = 0; i < targetPhase.length; i++) {
+    if (i === targetPhase.length - 1) {
+      result.push(mutation[i]);
+    } else {
+      result.push(targetPhase[i]);
+      result.push(mutation[i]);
+    }
+  }
+  return result.join("");
+};
