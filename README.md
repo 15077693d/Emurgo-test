@@ -1,14 +1,13 @@
 # Emurgo-test
 
-1. Permutations
-
+1. Permutations</br>
 Input: a string of unknown length that can contain only three characters: 0, 1, or *. For example: "101*011*1”
 Output: an array of strings where each string is a permutation of the input string with the * character replaced by a 0 or a 1. For example: for
 input "\*1" the result array is ["01", "11"]
 Tasks: Implement the function/program that will give correct output for all possible inputs within given restrictions. Write a documenting comment
 explaining the algorithmic complexity of the program.
 
-3. Building a transaction
+3. Building a transaction</br>
    Intro: we are creating a software solution for a bank and you are being commissioned to build one function out of the entire system, but this function will construct an internal transaction object, which moves the funds when some accounts are getting closed.
    Requirements: from times to times the bank will want to run a big internal operation which closes multiple reserve accounts and moves all the funds into multiple recipient accounts according to the corresponding credit, and the task of the function is to detail how exactly the funds will move between the accounts and also calculate the cost of the operation itself.
    Tasks: implement function newRebalancingTx(closingAccounts, recipientAccounts). Where closingAccounts is an array of objects like { accountId: string, amount: number }, recipientAccounts is an array of objects like { accountId: string, credit: number }. And the function is supposed to return an object of this format:
