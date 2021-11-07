@@ -3,6 +3,7 @@ import {
   substractStar,
   getUniqueMutations,
   getZeroOneMutations,
+  main,
 } from "../index";
 describe("getArrayMutations", () => {
   test("[] -> []", () => {
@@ -63,6 +64,16 @@ describe("getZeroOneMutations", () => {
       ["0", "0", "0"],
       ["0", "0", "1"],
       ["0", "1", "1"],
+      ["1", "1", "1"],
     ]);
+  });
+});
+
+describe("main", () => {
+  test(" '' -> [ '' ] ", () => {
+    expect(main("")).toStrictEqual([""]);
+  });
+  test(" '1*0' -> [['0', '1'],['1', '0']]", () => {
+    expect(main("1*0")).toStrictEqual(["100", "110"]);
   });
 });

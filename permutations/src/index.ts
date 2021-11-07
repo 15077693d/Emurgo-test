@@ -7,7 +7,7 @@
  */
 export const getZeroOneMutations = (numberOfStar: number) => {
   const perms: string[][] = [];
-  for (let i = 0; i < numberOfStar; i++) {
+  for (let i = 0; i <= numberOfStar; i++) {
     const numberOfZero = numberOfStar - i;
     const numberOfOne = i;
     const subPerm: string[] = [];
@@ -64,5 +64,27 @@ export const substractStar = (mutation: string[], target: string): string => {
   }
   return result.join("");
 };
-
-export const main = () => {};
+/**
+ *
+ * @param {string} input
+ * @returns {string[]} output
+ */
+export const main = (input: string): string[] => {
+  const output: string[] = [];
+  // getZeroOneMutations
+  const numberOfStar = input.split("*").length - 1;
+  if (numberOfStar == 0) {
+    output.push(input);
+  } else {
+    const zeroOneMutations = getZeroOneMutations(numberOfStar);
+    // getArrayMutations, substractStar
+    zeroOneMutations.forEach((zeroOneMutation) => {
+      const arrayMutations = getArrayMutations(zeroOneMutation);
+      const uniqueMutations = getUniqueMutations(arrayMutations);
+      uniqueMutations.forEach((uniqueMutation) => {
+        output.push(substractStar(uniqueMutation, input));
+      });
+    });
+  }
+  return output;
+};
