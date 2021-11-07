@@ -1,0 +1,35 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>permutations</title><meta name="description" content="Documentation for permutations"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">permutations</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>permutations</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#emurgo-test" id="emurgo-test" style="color: inherit; text-decoration: none;">
+  <h1>Emurgo-test</h1>
+</a>
+<ol>
+<li><p>Permutations</br>
+Input: a string of unknown length that can contain only three characters: 0, 1, or <em>. For example: &quot;101</em>011*1”
+Output: an array of strings where each string is a permutation of the input string with the * character replaced by a 0 or a 1. For example: for
+input &quot;*1&quot; the result array is [&quot;01&quot;, &quot;11&quot;]
+Tasks: Implement the function/program that will give correct output for all possible inputs within given restrictions. Write a documenting comment
+explaining the algorithmic complexity of the program.</p>
+</li>
+<li><p>Building a transaction</br>
+Intro: we are creating a software solution for a bank and you are being commissioned to build one function out of the entire system, but this function will construct an internal transaction object, which moves the funds when some accounts are getting closed.
+Requirements: from times to times the bank will want to run a big internal operation which closes multiple reserve accounts and moves all the funds into multiple recipient accounts according to the corresponding credit, and the task of the function is to detail how exactly the funds will move between the accounts and also calculate the cost of the operation itself.
+Tasks: implement function newRebalancingTx(closingAccounts, recipientAccounts). Where closingAccounts is an array of objects like { accountId: string, amount: number }, recipientAccounts is an array of objects like { accountId: string, credit: number }. And the function is supposed to return an object of this format:
+{
+transfers: [
+[fromAccountId, toAccountId, value],
+],
+operationalFee: number,
+}</p>
+<ol>
+<li>The transfers array must contain a listing of how the money must be moved from all closed accounts into all new accounts. For example, if we have one closing account with ID acc1 and amount 1000 and two receipients with IDs rec1 and rec2 and credit values 500 and 400 - the first two elements in the transfers array will be: [acc1, rec1, 500], [acc1, rec2, 400].</li>
+<li>A transfer cannot have a zero or negative value, such transaction will not be accepted and will cause an error.</li>
+<li>If there are more money on a closed account than required for one receipient - then the remainder should go into the next receipient account.</li>
+<li>If there are not enough money in total in all closed accounts to fulfill total credit in recipients - an error must be raised: “not enough funds for rebalance“.</li>
+<li>If there is more money available in closed accounts than total recipients credit - the remainder should be transferred from each account with a remainder to a new reserve which is added to transfers with account ID null. For example, if closed acc1 and acc2 with amounts 500 and 500 and one recipient rec1 with credit 400 - then transfers would be [[acc1, rec1, 400], [acc1, null, 100], [acc2, null, 500]].
+Here’s the catch, though, for any rebalancing transaction a special operational-fee must be included, which depends on the number of transfers and is calculated as transfers.length * 10. This amount must be subtracted from the remainder transferred into reserve. For example, if closed acc1 and acc2 with amounts 500 and 500 and one recipient rec1 with credit 400 - then the full correct response will be:
+So the end goal of the produced tx is to make sure every single bit of money on the input matches exactly to all the outputs plus the operational fee.
+If total value of closed accounts is not enough to fulfill the total recipient credit AND the operational fee - an error must be raised: “not enough funds for rebalance“.</li>
+</ol>
+</li>
+</ol>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-function"><a href="modules.html#getArrayMutations" class="tsd-kind-icon">get<wbr/>Array<wbr/>Mutations</a></li><li class="tsd-kind-function"><a href="modules.html#getUniqueMutations" class="tsd-kind-icon">get<wbr/>Unique<wbr/>Mutations</a></li><li class="tsd-kind-function"><a href="modules.html#getZeroOneMutations" class="tsd-kind-icon">get<wbr/>Zero<wbr/>One<wbr/>Mutations</a></li><li class="tsd-kind-function"><a href="modules.html#main" class="tsd-kind-icon">main</a></li><li class="tsd-kind-function"><a href="modules.html#substractStar" class="tsd-kind-icon">substract<wbr/>Star</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

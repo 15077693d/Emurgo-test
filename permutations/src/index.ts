@@ -1,5 +1,7 @@
 /**
- * Get basic mutation etc. if numberOfStar = 3 -> 000, 001, 011, 111
+ * Get basic mutation etc.
+ * if numberOfStar = 3 -> 000, 001, 011, 111
+ * if numberOfStar = 2 -> 00, 01, 11,
  * @param {number} numberOfStar
  * @returns {string[][]}
  */
@@ -33,7 +35,9 @@ export const getUniqueMutations = (perms: string[][]): string[][] => {
 };
 
 /**
- * Get array mutation etc. if arr = [ 0,0,1 ] -> [[0,0,1],[0,1,0],[1,0,0]]
+ * Get array mutation etc.
+ * if arr = [ 0,0,1 ] -> [[0,0,1],[0,1,0],[1,0,0]]
+ * if arr = [ 1,1 ] -> [[1,1],[1,1]]
  * @param {string[]} arr
  * @param {string[][]} perms
  * @param {number} len
@@ -83,9 +87,16 @@ export const substractStar = (mutation: string[], target: string): string => {
   return result.join("");
 };
 /**
- * 1. getZeroOneMutations (basic mutations) with numberOfStar.
+ * let input = 10*0**
+ * 1. Get ZeroOneMutations (basic mutations) with numberOfStar.
+ * if numberOfStar = 3, basic mutations = [000,001,011,111]
  * 2. Loop basic mutations and get uniqueMutations then substractStar with mutation.
- * 3. Push mutation star to output array and return it.
+ * if basic mutation = 001,
+ * Arry mutations = [ [ '0', '0', '1' ],[ '0', '0', '1' ],[ '1', '0', '0' ],[ '0', '1', '0' ],[ '0', '1', '0' ],[ '1', '0', '0' ]]
+ * Unique mutations = [ [ '0', '0', '1' ],[ '1', '0', '0' ],[ '0', '1', '0' ]]
+ * Mutations after substractStar = 100001 101000 100010
+ * 3. Push mutation to output array and return it.
+ *
  * @param {string} input
  * @returns {string[]}
  */
