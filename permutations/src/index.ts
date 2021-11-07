@@ -1,9 +1,7 @@
 /**
- * 2
- * 11 2 -> 1
- * 01 1 -> 1
- * 00 0 -> 1
- * @param numberOfStar
+ * Get basic mutation etc. if numberOfStar = 3 -> 000, 001, 011, 111
+ * @param {number} numberOfStar
+ * @returns {string[][]}
  */
 export const getZeroOneMutations = (numberOfStar: number) => {
   const perms: string[][] = [];
@@ -21,16 +19,30 @@ export const getZeroOneMutations = (numberOfStar: number) => {
   }
   return perms;
 };
+
+/**
+ * Get unique mutation etc. if perms = [[1,2,3],[1,2,3]] -> [1,2,3]
+ * @param {string[][]} perms ArrayMutations
+ * @returns {string[][]}
+ */
 export const getUniqueMutations = (perms: string[][]): string[][] => {
   // set perms string
   return Array.from(new Set(perms.map((array) => array.join("")))).map(
     (permString) => permString.split("")
   );
 };
+
+/**
+ * Get array mutation etc. if arr = [ 0,0,1 ] -> [[0,0,1],[0,1,0],[1,0,0]]
+ * @param {string[]} arr
+ * @param {string[][]} perms
+ * @param {number} len
+ * @returns {string[][]}
+ */
 export const getArrayMutations = (
   arr: string[],
   perms: string[][] = [],
-  len = arr.length
+  len: number = arr.length
 ): string[][] => {
   if (len === 1) perms.push(arr.slice(0));
 
@@ -44,6 +56,12 @@ export const getArrayMutations = (
   return perms;
 };
 
+/**
+ * Get input with * replace with mutation
+ * @param {string[]} mutation
+ * @param {string} target
+ * @returns {string}
+ */
 export const substractStar = (mutation: string[], target: string): string => {
   if (mutation.length === 1) {
     return target.replace("*", mutation[0]);
@@ -65,19 +83,21 @@ export const substractStar = (mutation: string[], target: string): string => {
   return result.join("");
 };
 /**
- *
+ * 1. getZeroOneMutations (basic mutations) with numberOfStar.
+ * 2. Loop basic mutations and get uniqueMutations then substractStar with mutation.
+ * 3. Push mutation star to output array and return it.
  * @param {string} input
- * @returns {string[]} output
+ * @returns {string[]}
  */
 export const main = (input: string): string[] => {
   const output: string[] = [];
-  // getZeroOneMutations
   const numberOfStar = input.split("*").length - 1;
   if (numberOfStar == 0) {
     output.push(input);
   } else {
+    // getZeroOneMutations with numberOfStar
     const zeroOneMutations = getZeroOneMutations(numberOfStar);
-    // getArrayMutations, substractStar
+    // loop ZeroOneMutations  and get uniqueMutations then substractStar
     zeroOneMutations.forEach((zeroOneMutation) => {
       const arrayMutations = getArrayMutations(zeroOneMutation);
       const uniqueMutations = getUniqueMutations(arrayMutations);
@@ -88,3 +108,5 @@ export const main = (input: string): string[] => {
   }
   return output;
 };
+
+console.log(main("1*0*"));
