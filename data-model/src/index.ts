@@ -1,5 +1,23 @@
+enum FoodTypes {
+  MEAT = "MEAT",
+  VEGETABLE = "VEGETABLE",
+  SEAFOOD = "SEAFOOD",
+  SPICINESS = "SPICINESS",
+}
+enum Allergens {
+  SOYBEANS = "SOYBEANS",
+  PEANUTS = "PEANUTS",
+  MILK = "MILK",
+  WHEAT = "WHEAT",
+  EGGS = "EGGS",
+  FISH = "FISH",
+  SHELLFISH = "SHELLFISH",
+  NUTS = "NUTS",
+}
 export interface Ingredient {
   name: string;
+  foodtypes: FoodTypes[];
+  allergens: Allergens[];
   calorie: number;
 }
 export interface Recipe {
