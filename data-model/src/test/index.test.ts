@@ -1,129 +1,120 @@
 import {
-  hasFoodTypes,
-  hasAllergens,
   Ingredient,
   Recipe,
-  removeIngredients,
-  doubleIngredients,
+  FoodTypes,
+  Allergens,
+  hasFoodTypes,
+  hasAllergens,
   removeAllergens,
   removeFoodTypes,
+  removeIngredients,
+  doubleIngredients,
   getCalories,
 } from "../index";
 
-const mushroomIngredient: Ingredient = {
-  name: "mushroom",
+const eggIngredient: Ingredient = {
+  unit: 1,
+  name: "egg",
+  foodtypes: [FoodTypes.MEAT],
+  allergens: [Allergens.EGGS],
   calorie: 10,
 };
 
-const appleIngredient: Ingredient = {
-  name: "apple",
+const beafIngredient: Ingredient = {
+  unit: 1,
+  name: "beaf",
+  foodtypes: [FoodTypes.MEAT],
+  allergens: [],
+  calorie: 10,
+};
+
+const doubleBeafIngredient: Ingredient = {
+  unit: 2,
+  name: "beaf",
+  foodtypes: [FoodTypes.MEAT],
+  allergens: [],
   calorie: 20,
 };
 
-const doubleAppleIngredient: Ingredient = {
-  name: "apple",
-  calorie: 40,
-};
-const mushroomPizza: Recipe = {
-  name: "mushroom pizza",
-  foodtypes: ["mushroom"],
-  allergens: ["mushroom"],
-  ingredients: [mushroomIngredient],
+const doubleEggIngredient: Ingredient = {
+  unit: 2,
+  name: "egg",
+  foodtypes: [FoodTypes.MEAT],
+  allergens: [Allergens.EGGS],
+  calorie: 20,
 };
 
-const applePizza: Recipe = {
-  name: "apple pizza",
-  foodtypes: ["apple"],
-  allergens: ["apple"],
-  ingredients: [appleIngredient],
-};
+const eggBeafPizzaDouble = new Recipe("eggBeefPizza", [
+  doubleEggIngredient,
+  doubleBeafIngredient,
+]);
+const eggBeafPizza = new Recipe("eggBeefPizza", [
+  eggIngredient,
+  beafIngredient,
+]);
 
-const appleMushroomPizza: Recipe = {
-  name: "apple mushroom pizza",
-  foodtypes: ["apple", "mushroom"],
-  allergens: ["apple", "mushroom"],
-  ingredients: [appleIngredient, mushroomIngredient],
-};
-
-const appleMushroomPizzaWithoutApple: Recipe = {
-  name: "apple mushroom pizza",
-  foodtypes: ["apple", "mushroom"],
-  allergens: ["apple", "mushroom"],
-  ingredients: [mushroomIngredient],
-};
-
-const appleMushroomPizzaAppleDouble: Recipe = {
-  name: "apple mushroom pizza",
-  foodtypes: ["apple", "mushroom"],
-  allergens: ["apple", "mushroom"],
-  ingredients: [doubleAppleIngredient, mushroomIngredient],
-};
-
-const appleMushroomPizzaAppleRemoveAppleType: Recipe = {
-  name: "apple mushroom pizza",
-  foodtypes: ["mushroom"],
-  allergens: ["apple", "mushroom"],
-  ingredients: [appleIngredient, mushroomIngredient],
-};
-
-const appleMushroomPizzaAppleRemoveAppleAllergens: Recipe = {
-  name: "apple mushroom pizza",
-  foodtypes: ["apple", "mushroom"],
-  allergens: ["mushroom"],
-  ingredients: [appleIngredient, mushroomIngredient],
-};
-describe("hasFoodTypes", () => {
-  test("pizza with mushrooms return true", () => {
-    expect(hasFoodTypes(mushroomPizza, ["mushroom"])).toBe(true);
+const eggBeafPizzaWithOutEgg = new Recipe("eggBeefPizza", [beafIngredient]);
+const eggBeafPizzaWithOutMeat = new Recipe("eggBeefPizza", []);
+describe("Recipe", () => {
+  test("Recipe show correct ingredients foodtypes allergens", () => {
+    expect(eggBeafPizza.name).toBe("eggBeefPizza");
+    expect(eggBeafPizza.foodtypes).toStrictEqual(new Set(["MEAT"]));
+    expect(eggBeafPizza.allergens).toStrictEqual(new Set(["EGGS"]));
   });
-  test("pizza with apple return false", () => {
-    expect(hasFoodTypes(applePizza, ["mushroom"])).toBe(false);
+});
+
+describe("hasFoodTypes", () => {
+  test("eggBeafPizza have meat return true", () => {
+    expect(hasFoodTypes(eggBeafPizza, [FoodTypes.MEAT])).toBe(true);
+  });
+  test("eggBeafPizza have SEAFOOD return false", () => {
+    expect(hasFoodTypes(eggBeafPizza, [FoodTypes.SEAFOOD])).toBe(false);
   });
 });
 
 describe("hasAllergens", () => {
-  test("pizza with mushrooms return true", () => {
-    expect(hasAllergens(mushroomPizza, ["mushroom"])).toBe(true);
+  test("eggBeafPizza have eggs return true", () => {
+    expect(hasAllergens(eggBeafPizza, [Allergens.EGGS])).toBe(true);
   });
-  test("pizza with apple return false", () => {
-    expect(hasAllergens(applePizza, ["mushroom"])).toBe(false);
-  });
-});
-
-describe("removeIngredients", () => {
-  test("appleMushroomPizza remove apple", () => {
-    expect(
-      removeIngredients(appleMushroomPizza, [appleIngredient])
-    ).toStrictEqual(appleMushroomPizzaWithoutApple);
-  });
-});
-
-describe("doubleIngredients", () => {
-  test("appleMushroomPizza double apple", () => {
-    expect(
-      doubleIngredients(appleMushroomPizza, [appleIngredient])
-    ).toStrictEqual(appleMushroomPizzaAppleDouble);
+  test("eggBeafPizza have nuts return false", () => {
+    expect(hasAllergens(eggBeafPizza, [Allergens.NUTS])).toBe(false);
   });
 });
 
 describe("removeAllergens", () => {
-  test("appleMushroomPizza remove apple Allergens", () => {
-    expect(removeAllergens(appleMushroomPizza, ["apple"])).toStrictEqual(
-      appleMushroomPizzaAppleRemoveAppleAllergens
+  test("eggBeafPizza remove eggs Allergens", () => {
+    expect(removeAllergens(eggBeafPizza, [Allergens.EGGS])).toStrictEqual(
+      eggBeafPizzaWithOutEgg
     );
   });
 });
 
 describe("removeFoodTypes", () => {
-  test("appleMushroomPizza remove apple Type", () => {
-    expect(removeFoodTypes(appleMushroomPizza, ["apple"])).toStrictEqual(
-      appleMushroomPizzaAppleRemoveAppleType
+  test("eggBeafPizza remove apple Type", () => {
+    expect(removeFoodTypes(eggBeafPizza, [FoodTypes.MEAT])).toStrictEqual(
+      eggBeafPizzaWithOutMeat
+    );
+  });
+});
+
+describe("removeIngredients", () => {
+  test("eggBeafPizza remove egg", () => {
+    expect(removeIngredients(eggBeafPizza, [eggIngredient])).toStrictEqual(
+      eggBeafPizzaWithOutEgg
+    );
+  });
+});
+
+describe("doubleIngredients", () => {
+  test("eggBeafPizza double", () => {
+    expect(doubleIngredients(eggBeafPizza, [beafIngredient])).toStrictEqual(
+      eggBeafPizzaDouble
     );
   });
 });
 
 describe("getCalories", () => {
-  test("appleMushroomPizza get calories = 30", () => {
-    expect(getCalories(appleMushroomPizza)).toBe(30);
+  test("eggBeafPizza get calories = 30", () => {
+    expect(getCalories(eggBeafPizza)).toBe(20);
   });
 });

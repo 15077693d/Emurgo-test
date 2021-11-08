@@ -1,12 +1,42 @@
+export enum FoodTypes {
+  MEAT = "MEAT",
+  VEGETABLE = "VEGETABLE",
+  SEAFOOD = "SEAFOOD",
+  SPICINESS = "SPICINESS",
+}
+
+export enum Allergens {
+  SOYBEANS = "SOYBEANS",
+  PEANUTS = "PEANUTS",
+  MILK = "MILK",
+  WHEAT = "WHEAT",
+  EGGS = "EGGS",
+  FISH = "FISH",
+  SHELLFISH = "SHELLFISH",
+  NUTS = "NUTS",
+}
+
 export interface Ingredient {
+  unit: number;
   name: string;
+  foodtypes: FoodTypes[];
+  allergens: Allergens[];
   calorie: number;
 }
-export interface Recipe {
+
+export class Recipe {
   name: string;
-  foodtypes: string[];
-  allergens: string[];
   ingredients: Ingredient[];
+  foodtypes: Set<FoodTypes> = new Set();
+  allergens: Set<Allergens> = new Set();
+  constructor(name: string, ingredients: Ingredient[]) {
+    this.name = name;
+    this.ingredients = ingredients;
+    ingredients.forEach((ingredient) => {
+      ingredient.foodtypes.forEach((foodtype) => this.foodtypes.add(foodtype));
+      ingredient.allergens.forEach((allergen) => this.allergens.add(allergen));
+    });
+  }
 }
 
 /**
@@ -15,9 +45,14 @@ export interface Recipe {
  * @param foodtypes
  * @returns
  */
-export const hasFoodTypes = (recipe: Recipe, foodtypes: string[]): boolean => {
-  for (let i = 0; i < foodtypes.length; i++) {
-    if (recipe.foodtypes.includes(foodtypes[i])) {
+export const hasFoodTypes = (
+  recipe: Recipe,
+  foodtypes: FoodTypes[]
+): boolean => {
+  const recipeFoodTypes: FoodTypes[] = [];
+  for (let i = 0; i < recipe.ingredients.length; i++) {
+    // loop ingredients
+    if (Array.from(recipe.foodtypes).includes(foodtypes[i])) {
       return true;
     }
   }
@@ -30,9 +65,12 @@ export const hasFoodTypes = (recipe: Recipe, foodtypes: string[]): boolean => {
  * @param allergens
  * @returns
  */
-export const hasAllergens = (recipe: Recipe, allergens: string[]): boolean => {
+export const hasAllergens = (
+  recipe: Recipe,
+  allergens: Allergens[]
+): boolean => {
   for (let i = 0; i < allergens.length; i++) {
-    if (recipe.allergens.includes(allergens[i])) {
+    if (Array.from(recipe.allergens).includes(allergens[i])) {
       return true;
     }
   }
@@ -47,13 +85,18 @@ export const hasAllergens = (recipe: Recipe, allergens: string[]): boolean => {
  */
 export const removeAllergens = (
   recipe: Recipe,
-  allergens: string[]
+  allergens: Allergens[]
 ): Recipe => {
-  const _recipe = JSON.parse(JSON.stringify(recipe));
-  _recipe.allergens = _recipe.allergens.filter(
-    (allergen) => !allergens.includes(allergen)
-  );
-  return _recipe;
+  const newIngredients = recipe.ingredients.filter((ingredient) => {
+    let flag = true;
+    for (let index = 0; index < ingredient.allergens.length; index++) {
+      if (allergens.includes(ingredient.allergens[index])) {
+        flag = false;
+      }
+    }
+    return flag;
+  });
+  return new Recipe(recipe.name, newIngredients);
 };
 
 /**
@@ -64,13 +107,18 @@ export const removeAllergens = (
  */
 export const removeFoodTypes = (
   recipe: Recipe,
-  foodtypes: string[]
+  foodtypes: FoodTypes[]
 ): Recipe => {
-  const _recipe = JSON.parse(JSON.stringify(recipe));
-  _recipe.foodtypes = _recipe.foodtypes.filter(
-    (foodtype) => !foodtypes.includes(foodtype)
-  );
-  return _recipe;
+  const newIngredients = recipe.ingredients.filter((ingredient) => {
+    let flag = true;
+    for (let index = 0; index < ingredient.foodtypes.length; index++) {
+      if (foodtypes.includes(ingredient.foodtypes[index])) {
+        flag = false;
+      }
+    }
+    return flag;
+  });
+  return new Recipe(recipe.name, newIngredients);
 };
 
 /**
@@ -83,14 +131,13 @@ export const removeIngredients = (
   recipe: Recipe,
   ingredients: Ingredient[]
 ): Recipe => {
-  const _recipe = JSON.parse(JSON.stringify(recipe));
   const removedIngredientName = ingredients.map(
     (_ingredient) => _ingredient.name
   );
-  _recipe.ingredients = _recipe.ingredients.filter(
+  const newIngredients = recipe.ingredients.filter(
     (ingredient) => !removedIngredientName.includes(ingredient.name)
   );
-  return _recipe;
+  return new Recipe(recipe.name, newIngredients);
 };
 
 /**
@@ -103,19 +150,23 @@ export const doubleIngredients = (
   recipe: Recipe,
   ingredients: Ingredient[]
 ): Recipe => {
-  const _recipe = JSON.parse(JSON.stringify(recipe));
-  const doubleIngredientName = ingredients.map((ingredient) => ingredient.name);
-  _recipe.ingredients = _recipe.ingredients.map((ingredient) => {
-    if (doubleIngredientName.includes(ingredient.name)) {
+  const doubleIngredientNames = recipe.ingredients.map(
+    (ingredient) => ingredient.name
+  );
+  let newIngredients: Ingredient[] = recipe.ingredients.map((ingredient) => {
+    if (doubleIngredientNames.includes(ingredient.name)) {
       return {
+        unit: ingredient.unit * 2,
         name: ingredient.name,
+        foodtypes: ingredient.foodtypes,
+        allergens: ingredient.allergens,
         calorie: ingredient.calorie * 2,
       };
     } else {
       return ingredient;
     }
   });
-  return _recipe;
+  return new Recipe(recipe.name, newIngredients);
 };
 
 /**
