@@ -15,6 +15,7 @@ export enum Allergens {
   SHELLFISH = "SHELLFISH",
   NUTS = "NUTS",
 }
+
 export interface Ingredient {
   unit: number;
   name: string;
