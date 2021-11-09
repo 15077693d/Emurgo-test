@@ -1,6 +1,6 @@
 /**
- * Algorithmic Complexity: O(O(numberOfZero + numberOfOne))
- * Get basic mutation etc.
+ * 1. Algorithmic Complexity: O(O(numberOfZero + numberOfOne))
+ * 2. Get basic mutation etc.
  * if numberOfStar = 3 -> 000, 001, 011, 111
  * if numberOfStar = 2 -> 00, 01, 11,
  * @param {number} numberOfStar
@@ -24,8 +24,8 @@ export const getZeroOneMutations = (numberOfStar: number) => {
 };
 
 /**
- * Algorithmic Complexity: O(numberOfMutations)
- * Get unique mutation etc. if perms = [[1,2,3],[1,2,3]] -> [1,2,3]
+ * 1. Algorithmic Complexity: O(numberOfMutations)
+ * 2. Get unique mutation etc. if perms = [[1,2,3],[1,2,3]] -> [1,2,3]
  * @param {string[][]} perms ArrayMutations
  * @returns {string[][]}
  */
@@ -37,8 +37,8 @@ export const getUniqueMutations = (perms: string[][]): string[][] => {
 };
 
 /**
- * Algorithmic Complexity: O(i^n)
- * Get array mutation etc.
+ * 1. Algorithmic Complexity: O(i^n)
+ * 2. Get array mutation etc.
  * if arr = [ 0,0,1 ] -> [[0,0,1],[0,1,0],[1,0,0]]
  * if arr = [ 1,1 ] -> [[1,1],[1,1]]
  * @param {string[]} arr
@@ -64,8 +64,8 @@ export const getArrayMutations = (
 };
 
 /**
- * Algorithmic Complexity: O(numberOfTargetPhase)
- * Get input with * replace with mutation
+ * 1. Algorithmic Complexity: O(numberOfTargetPhase)
+ * 2. Get input with * replace with mutation
  * @param {string[]} mutation
  * @param {string} target
  * @returns {string}
